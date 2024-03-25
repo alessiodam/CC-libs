@@ -1,0 +1,83 @@
+local MIN_LOG_LEVEL = 0
+local PRINT_TO_TERM = false
+local FILENAME = "logs.txt"
+
+local LOG_LEVELS = {
+    {
+        name = "DEBUG",         -- do NOT change
+        color = colors.white,
+        number = 0              -- do NOT change
+    },
+    {
+        name = "INFO",          -- do NOT change
+        color = colors.blue,
+        number = 1              -- do NOT change
+    },
+    {
+        name = "SUCCESS",       -- do NOT change
+        color = colors.green,
+        number = 2              -- do NOT change
+    },
+    {
+        name = "WARN",          -- do NOT change
+        color = colors.yellow,
+        number = 3              -- do NOT change
+    },
+    {
+        name = "ERROR",         -- do NOT change
+        color = colors.red,
+        number = 4              -- do NOT change
+    }
+}
+
+local function write_log(level, message)
+    if level < MIN_LOG_LEVEL then
+        return
+    end
+
+    local level_index = math.min(math.max(level, 0), #LOG_LEVELS-1)
+    local level_data = LOG_LEVELS[level_index+1]
+    local color_before = term.getTextColor()
+
+    if PRINT_TO_TERM then
+        term.setTextColor(level_data.color)
+        print("[" .. string.upper(level_data.name) .. "] " .. message)
+        term.setTextColor(color_before)
+    end
+
+    if FILENAME ~= "" then
+        local file = io.open(FILENAME, "a")
+        if file then
+            file:write(os.date("[%Y-%m-%d %H:%M:%S]: [" .. string.upper(level_data.name) .. "] ") .. message .. "\n")
+            file:close()
+        else
+            print("Error: Failed to open log file")
+        end
+    end
+end
+
+function init(level, print_to_term, filename)
+    MIN_LOG_LEVEL = level
+    PRINT_TO_TERM = print_to_term
+    FILENAME = filename
+end
+
+function debug(message)
+    write_log(0, message)
+end
+
+function info(message)
+    write_log(1, message)
+end
+
+function success(message)
+    write_log(2, message)
+end
+
+function warning(message)
+    write_log(3, message)
+end
+
+function error(message)
+    write_log(4, message)
+end
