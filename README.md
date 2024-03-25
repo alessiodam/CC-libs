@@ -1,6 +1,12 @@
 # CC Libs
 This repository contains a set of ComputerCraft librairies to use with ComputerCraft
 
+## How to use?
+for example:
+```lua
+os.loadAPI("logging")
+```
+
 ### logging
 I made this logging library because I needed good logging for my programs, this will probably get frequent updates!
 
