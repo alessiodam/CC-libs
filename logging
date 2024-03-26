@@ -1,4 +1,4 @@
---- Logging module.
+-- Logging module.
 -- Provides functions to log messages with different severities.
 -- Messages can be printed to the terminal and/or written to a log file.
 -- @module logging
@@ -10,6 +10,7 @@
 -- @field SUCCESS The success severity.
 -- @field WARN The warning severity.
 -- @field ERROR The error severity.
+
 local LOG_LEVELS = {
     {
         name = "DEBUG",         -- do NOT change
@@ -65,9 +66,9 @@ local function write_log(level, message)
 end
 
 --- Initializes the logging module.
--- @param level The minimum severity level of messages to be logged.
--- @param print_to_term If `true`, messages will be printed to the terminal.
--- @param filename The name of the log file. An empty string disables file logging.
+--- @param level number The minimum severity level of messages to be logged.
+--- @param print_to_term boolean If `true`, messages will be printed to the terminal.
+--- @param filename string The name of the log file. An empty string disables file 
 function init(level, print_to_term, filename)
     MIN_LOG_LEVEL = level
     PRINT_TO_TERM = print_to_term
@@ -75,33 +76,31 @@ function init(level, print_to_term, filename)
 end
 
 --- Logs a debug message.
--- @param message The debug message to be logged.
+--- @param message string The debug message to be logged.
 function debug(message)
     write_log(0, message)
 end
 
 --- Logs an info message.
--- @param message The info message to be logged.
+--- @param message string The info message to be logged.
 function info(message)
     write_log(1, message)
 end
 
 --- Logs a success message.
--- @param message The success message to be logged.
+--- @param message string The success message to be logged.
 function success(message)
     write_log(2, message)
 end
 
 --- Logs a warning message.
--- @param message The warning message to be logged.
+--- @param message string The warning message to be logged.
 function warning(message)
     write_log(3, message)
 end
 
 --- Logs an error message.
--- @param message The error message to be logged.
+--- @param message string The error message to be logged.
 function error(message)
     write_log(4, message)
 end
-
-
