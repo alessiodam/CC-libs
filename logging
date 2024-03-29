@@ -1,5 +1,5 @@
 -- Logging module.
--- Provides functions to log messages with different severities.
+-- Provides local functions to log messages with different severities.
 -- Messages can be printed to the terminal and/or written to a log file.
 -- @module logging
 
@@ -10,6 +10,8 @@
 -- @field SUCCESS The success severity.
 -- @field WARN The warning severity.
 -- @field ERROR The error severity.
+
+local expect = require("cc.expect").expect
 
 local LOG_LEVELS = {
     {
@@ -40,6 +42,8 @@ local LOG_LEVELS = {
 }
 
 local function write_log(level, message)
+    expect(1, level, "number")
+    expect(2, message, "string")
     if level < MIN_LOG_LEVEL then
         return
     end
@@ -69,7 +73,10 @@ end
 --- @param level number The minimum severity level of messages to be logged.
 --- @param print_to_term boolean If `true`, messages will be printed to the terminal.
 --- @param filename string The name of the log file. An empty string disables file 
-function init(level, print_to_term, filename)
+local function init(level, print_to_term, filename)
+    expect(1, level, "number")
+    expect(2, print_to_term, "boolean")
+    expect(3, filename, "string", "nil")
     MIN_LOG_LEVEL = level
     PRINT_TO_TERM = print_to_term
     FILENAME = filename
@@ -77,30 +84,44 @@ end
 
 --- Logs a debug message.
 --- @param message string The debug message to be logged.
-function debug(message)
+local function debug(message)
+    expect(1, message, "string")
     write_log(0, message)
 end
 
 --- Logs an info message.
 --- @param message string The info message to be logged.
-function info(message)
+local function info(message)
+    expect(1, message, "string")
     write_log(1, message)
 end
 
 --- Logs a success message.
 --- @param message string The success message to be logged.
-function success(message)
+local function success(message)
+    expect(1, message, "string")
     write_log(2, message)
 end
 
 --- Logs a warning message.
 --- @param message string The warning message to be logged.
-function warning(message)
+local function warning(message)
+    expect(1, message, "string")
     write_log(3, message)
 end
 
 --- Logs an error message.
 --- @param message string The error message to be logged.
-function error(message)
+local function error(message)
+    expect(1, message, "string")
     write_log(4, message)
 end
+
+return {
+    init = init,
+    debug = debug,
+    info = info,
+    success = success,
+    warning = warning,
+    error = error
+}
